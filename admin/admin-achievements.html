@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Achievements — Admin Panel — Shakespeare Ideal School</title>
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+
+<aside class="sidebar" id="sidebarEl"></aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title">🏆 Achievements</div>
+    <div class="topbar-meta">
+      <a href="/achievements.html" class="view-site-btn" target="_blank">View Live Site →</a>
+    </div>
+  </div>
+  <div class="content" id="mainContent"></div>
+</div>
+
+<div id="toast"></div>
+
+<script src="/js/admin-shared.js"></script>
+<script>
+let state = { achievements: { categories: [] } };
+
+document.getElementById('sidebarEl').innerHTML = buildSidebar('pages', 'achievements');
+
+async function init() {
+  state.achievements = await apiGet('/api/data/achievements').catch(() => ({ categories: [] }));
+  if (!Array.isArray(state.achievements.categories)) state.achievements.categories = [];
+  render();
+}
+
+function render() {
+  const cats = state.achievements.categories;
+  document.getElementById('mainContent').innerHTML = `
+    <div class="card">
+      <div class="card-title">🏆 Achievements</div>
+      <div id="achList">
+        ${cats.map((cat, i) => `
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:12px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+              <strong style="font-size:13px;">Category ${i + 1}</strong>
+              <button class="btn btn-danger btn-sm" onclick="deleteAchCat(${i})">🗑 Delete</button>
+            </div>
+            <div class="form-group" style="margin-bottom:10px">
+              <label>Category Title</label>
+              <input id="ac-t-${i}" value="${esc(cat.title || '')}">
+            </div>
+            <div class="form-group">
+              <label>Items (one per line)</label>
+              <textarea id="ac-i-${i}" rows="4">${esc((cat.items || []).join('\n'))}</textarea>
+            </div>
+          </div>`).join('')}
+        ${cats.length === 0 ? `<div class="empty-state"><div class="empty-state-icon">🏆</div><p>No achievement categories yet. Click "Add Category" to start.</p></div>` : ''}
+      </div>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="btn btn-outline" onclick="addAchCat()">➕ Add Category</button>
+        <button class="btn btn-success" onclick="saveAchievements()">💾 Save All</button>
+      </div>
+    </div>`;
+}
+
+window.addAchCat = () => {
+  state.achievements.categories.push({ title: '', items: [] });
+  render();
+};
+
+window.deleteAchCat = (index) => {
+  state.achievements.categories.splice(index, 1);
+  render();
+};
+
+window.saveAchievements = async () => {
+  const cats = state.achievements.categories.map((_, i) => ({
+    title: document.getElementById(`ac-t-${i}`).value.trim(),
+    items: document.getElementById(`ac-i-${i}`).value.split('\n').map(s => s.trim()).filter(Boolean)
+  }));
+  const updated = { ...state.achievements, categories: cats };
+  try {
+    await api('/api/data/achievements', { method: 'PUT', body: JSON.stringify(updated) });
+    state.achievements = updated;
+    toast('Achievements saved.');
+    render();
+  } catch (err) {
+    toast('Save failed: ' + err.message, 'error');
+  }
+};
+
+init();
+</script>
+</body>
+</html>
