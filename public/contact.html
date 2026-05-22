@@ -22,22 +22,35 @@
     fetch('/api/data/contact')
       .then(res => res.json())
       .then(data => {
+        const heroTag       = data.heroTag       || 'Reach Out';
+        const heroTitle     = data.heroTitle     || 'Get in Touch';
+        const findUsHeading = data.findUsHeading || 'Find Us';
+        const formHeading   = data.formHeading   || 'Send Us a Message';
+        const submitLabel   = data.submitLabel   || 'Send Message →';
+        const successMsg    = data.successMsg    || 'Message sent successfully! We will contact you soon.';
+        const mapUrl        = data.mapUrl        || '';
+
+        // Support new items[] array and legacy flat fields for backwards compatibility
+        const items = Array.isArray(data.items) && data.items.length
+          ? data.items
+          : [
+              { icon: '📍', label: 'Address',      value: data.address     || '123, Shakespeare Road, Anna Nagar, Chennai – 600 040' },
+              { icon: '📞', label: 'Phone',        value: data.phone       || '+91 98765 43210' },
+              { icon: '✉️', label: 'Email',        value: data.email       || 'info@shakespeareschool.edu.in' },
+              { icon: '🕐', label: 'Office Hours', value: data.officeHours || 'Mon – Sat: 8:00 AM – 4:30 PM' }
+            ];
+
         document.getElementById('page-content').innerHTML = `
-          ${School.renderPageHero('Get in Touch', 'Contact Us')}
+          ${School.renderPageHero(heroTag, heroTitle)}
   
           <div class="contact-container">
   
             <div class="contact-grid">
   
               <div>
-                <h3>Find Us</h3>
+                <h3>${findUsHeading}</h3>
   
-                ${[
-                  ['📍', 'Address',      data.address      || '123, Shakespeare Road, Anna Nagar, Chennai – 600 040'],
-                  ['📞', 'Phone',        data.phone        || '+91 98765 43210'],
-                  ['✉️', 'Email',        data.email        || 'info@shakespeareschool.edu.in'],
-                  ['🕐', 'Office Hours', data.officeHours  || 'Mon – Sat: 8:00 AM – 4:30 PM']
-                ].map(([icon, label, value]) => `
+                ${items.map(({ icon, label, value }) => `
                   <div class="contact-info-item">
   
                     <div class="contact-info-icon">
@@ -52,12 +65,25 @@
   
                   </div>
                 `).join('')}
+
+                ${mapUrl ? `
+                  <div style="margin-top:20px;border-radius:10px;overflow:hidden;">
+                    <iframe
+                      src="${mapUrl}"
+                      width="100%"
+                      height="220"
+                      style="border:0;display:block;"
+                      allowfullscreen=""
+                      loading="lazy"
+                      referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                  </div>` : ''}
   
               </div>
   
               <div class="card">
   
-                <h3>Send Us a Message</h3>
+                <h3>${formHeading}</h3>
   
                 <form id="contactForm">
   
@@ -96,7 +122,7 @@
                     type="submit"
                     class="btn btn-primary contact-submit-btn"
                   >
-                    Send Message →
+                    ${submitLabel}
                   </button>
   
                 </form>
@@ -132,7 +158,7 @@
             if (res.ok) {
               statusDiv.innerHTML = `
                 <p class="form-success">
-                  Message sent successfully! We will contact you soon.
+                  ${successMsg}
                 </p>
               `;
   

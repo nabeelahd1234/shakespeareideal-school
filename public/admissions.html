@@ -22,6 +22,16 @@
     fetch('/api/data/admissions')
       .then(res => res.json())
       .then(data => {
+        const heroTag        = data.heroTag        || 'Join Our Family';
+        const heroTitle      = data.heroTitle      || 'Admissions 2025-26';
+        const bannerTitle    = data.bannerTitle    || 'Admissions Now Open!';
+        const bannerSubtitle = data.bannerSubtitle || 'Applications are being accepted for LKG to Class X.';
+        const lastDate       = data.lastDate       || '31st March 2025';
+        const contactPhone   = data.contactPhone   || '+91 98765 43210';
+        const docsHeading    = data.docsHeading    || '📋 Required Documents';
+        const btnLabel       = data.downloadBtnLabel || 'Download Form';
+        const btnUrl         = data.downloadBtnUrl   || '/contact.html';
+
         const stepsHtml = (data.processSteps || []).map(s => `
           <div class="process-step">
             <div class="process-step-number">${s.step}</div>
@@ -41,23 +51,23 @@
         `).join('');
   
         document.getElementById('page-content').innerHTML = `
-          ${School.renderPageHero('Join Our Family', 'Admissions 2025-26')}
+          ${School.renderPageHero(heroTag, heroTitle)}
   
           <div class="admissions-container">
   
             <div class="admissions-banner">
               <h2 class="admissions-banner-title">
-                Admissions Now Open!
+                ${bannerTitle}
               </h2>
   
               <p>
-                Applications are being accepted for LKG to Class X.
+                ${bannerSubtitle}
               </p>
   
               <p>
-                📅 Last Date: ${data.lastDate || '31st March 2025'}
+                📅 Last Date: ${lastDate}
                 &nbsp;|&nbsp;
-                📞 Call: ${data.contactPhone || '+91 98765 43210'}
+                📞 Call: ${contactPhone}
               </p>
             </div>
   
@@ -71,15 +81,15 @@
               <div>
                 <div class="card documents-card">
   
-                  <h4>📋 Required Documents</h4>
+                  <h4>${docsHeading}</h4>
   
                   <ul class="documents-list">
                     ${docsHtml}
                   </ul>
   
-                  <a href="/contact.html"
+                  <a href="${btnUrl}"
                      class="btn btn-primary download-btn">
-                    Download Form
+                    ${btnLabel}
                   </a>
   
                 </div>

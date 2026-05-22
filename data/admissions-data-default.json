@@ -1,0 +1,28 @@
+{
+  "heroTag": "Join Our Family",
+  "heroTitle": "Admissions 2025-26",
+  "bannerTitle": "Admissions Now Open!",
+  "bannerSubtitle": "Applications are being accepted for LKG to Class X.",
+  "status": "open",
+  "lastDate": "31 March 2025",
+  "contactPhone": "+91 98765 43210",
+  "notice": "",
+  "docsHeading": "📋 Required Documents",
+  "downloadBtnLabel": "Download Form",
+  "downloadBtnUrl": "/contact.html",
+  "processSteps": [
+    { "step": "1", "title": "Collect Application Form",  "description": "Obtain the application form from the school office or download it from our website." },
+    { "step": "2", "title": "Submit Documents",           "description": "Submit the completed form along with all required documents to the school office." },
+    { "step": "3", "title": "Entrance Assessment",        "description": "Students appear for a simple aptitude assessment (Class III and above)." },
+    { "step": "4", "title": "Interview & Confirmation",   "description": "Parents and student meet with the Principal. Seat is confirmed upon fee payment." }
+  ],
+  "documents": [
+    "Birth Certificate (original + photocopy)",
+    "Transfer Certificate from previous school",
+    "Previous year report card / mark sheet",
+    "4 passport-size photographs",
+    "Aadhaar card (student + parent)",
+    "Caste certificate (if applicable)",
+    "Residential proof (Aadhaar / electricity bill)"
+  ]
+}

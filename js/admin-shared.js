@@ -116,6 +116,7 @@ function buildSidebar(activeModule, activeSection) {
         { id:'achievements',      icon:'🏆',  label:'Achievements',            href:'/admin/admin-achievements.html' },
         { id:'admissions',        icon:'📋',  label:'Admissions',              href:'/admin/admin-admissions.html' },
         { id:'rules-regulations', icon:'📝',  label:'Rules &amp; Regulations', href:'/admin/admin-rules.html' },
+        { id:'contact',           icon:'📞',  label:'Contact Page',            href:'/admin/admin-contact.html' },
       ]
     }
   ];

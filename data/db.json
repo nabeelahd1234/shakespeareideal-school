@@ -231,7 +231,8 @@
   "achievements": {
     "categories": [
       {
-        "title": "sss",
+        "title": "Academics",
+        "icon": "🎓",
         "items": [
           "100% SSLC Pass Rate — 2020, 2021, 2022, 2023, 2024",
           "District Topper in Maths — 3 consecutive years",
@@ -240,7 +241,8 @@
         ]
       },
       {
-        "title": "sssss",
+        "title": "Sports",
+        "icon": "🏆",
         "items": [
           "State Level Cricket Champions 2023",
           "District Athletics Gold — 5 events in 2024",
@@ -249,7 +251,8 @@
         ]
       },
       {
-        "title": "sss",
+        "title": "Cultural",
+        "icon": "🎭",
         "items": [
           "Best Drama Award — Zonals 2023",
           "First Prize Folk Dance — District Level",
@@ -258,7 +261,8 @@
         ]
       },
       {
-        "title": "sss",
+        "title": "Special Recognition",
+        "icon": "⭐",
         "items": [
           "Best Principal Award — State Govt 2022",
           "ISO 9001:2015 Certified School",
@@ -266,7 +270,9 @@
           "Best Infrastructure Award 2023"
         ]
       }
-    ]
+    ],
+    "heroTag": "Our Pride",
+    "heroTitle": "Achievements &amp; Awards"
   },
   "syllabus": [
     {
@@ -484,37 +490,37 @@
     }
   ],
   "admissions": {
-    "status": "closed",
-    "lastDate": "31st March 2025",
+    "status": "open",
+    "lastDate": "31st March 2026",
     "contactPhone": "+91 98765 43210",
     "processSteps": [
       {
-        "step": 1,
+        "step": "1",
         "title": "Download Form",
         "description": "Download or collect the admission form from the school office or this website."
       },
       {
-        "step": 2,
+        "step": "2",
         "title": "Fill & Submit",
         "description": "Complete the form and submit with required documents to the school office."
       },
       {
-        "step": 3,
+        "step": "3",
         "title": "Entrance Test",
         "description": "Students (Classes V and above) appear for a simple entrance assessment."
       },
       {
-        "step": 4,
+        "step": "4",
         "title": "Interview",
         "description": "A brief interaction with the Principal and class teacher."
       },
       {
-        "step": 5,
+        "step": "5",
         "title": "Fee Payment",
         "description": "Pay the admission and term fees to confirm your child's seat."
       },
       {
-        "step": 6,
+        "step": "6",
         "title": "Welcome!",
         "description": "Receive the school uniform kit, books list, and begin the journey!"
       }
@@ -526,7 +532,15 @@
       "Previous class Mark Sheet",
       "Residence Proof",
       "Caste Certificate (if applicable for concession)"
-    ]
+    ],
+    "heroTag": "Join Our Family",
+    "heroTitle": "Admissions 2026-27",
+    "bannerTitle": "Admissions Now Open!",
+    "bannerSubtitle": "Applications are being accepted for LKG to Class X.",
+    "notice": "",
+    "docsHeading": "📋 Required Documents",
+    "downloadBtnLabel": "Download Form",
+    "downloadBtnUrl": "/contact.html"
   },
   "classes": [
     {

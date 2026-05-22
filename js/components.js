@@ -1,13 +1,13 @@
 /**
  * School Components — Shared UI building blocks
  * Provides: Header (topbar + navbar + ticker), Footer, Page Hero banner,
- *           Dropdown initialisation, and a one-call page bootstrap helper.
+ * Dropdown initialisation, and a one-call page bootstrap helper.
  *
  * Usage in every page:
- *   1. Include this file BEFORE main.js
- *   2. Place <div id="header-placeholder"></div> at the top of <body>
- *   3. Place <div id="footer-placeholder"></div> at the bottom of <body>
- *   4. School.initPage() is called automatically on DOMContentLoaded
+ * 1. Include this file BEFORE main.js
+ * 2. Place <div id="header-placeholder"></div> at the top of <body>
+ * 3. Place <div id="footer-placeholder"></div> at the bottom of <body>
+ * 4. School.initPage() is called automatically on DOMContentLoaded
  */
 
 const School = (() => {
@@ -16,7 +16,7 @@ const School = (() => {
   const NAV_HTML = `
     <a href="/index.html" class="nav-link home-nav-item">Home</a>
     <div class="home-dropdown-container">
-      <button class="dropdown-btn home-dropdown-trigger">About ▼</button>
+      <button class="dropdown-btn home-dropdown-trigger">About Our School ▼</button>
       <div class="dropdown-menu home-dropdown-menu">
         <a href="/about.html"        class="home-dropdown-link">About Our School</a>
         <a href="/principal.html"    class="home-dropdown-link">About Principal</a>
@@ -59,7 +59,14 @@ const School = (() => {
               <div class="home-logo-subtitle">Matriculation School</div>
             </div>
           </a>
-          <div class="home-nav-links">${NAV_HTML}</div>
+          
+          <button class="nav-toggle" id="mobile-hamburger-btn" aria-label="Toggle Menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </button>
+
+          <div class="home-nav-links" id="mobile-nav-container">${NAV_HTML}</div>
         </div>
       </nav>
 
@@ -127,16 +134,13 @@ const School = (() => {
   }
 
   /* ── Page Hero Banner ────────────────────────────────────────────────────── */
-  /**
-   * Returns the gradient hero banner HTML used at the top of every inner page.
-   * @param {string} tagText  - Small coloured label above the title (e.g. "Our Story")
-   * @param {string} title    - Main heading (e.g. "About Our School")
-   */
   function renderPageHero(tagText, title) {
     return `
       <div class="page-hero">
         <p class="page-hero-tag">${tagText}</p>
         <h1 class="page-hero-title">${title}</h1>
+        <div style="position: absolute; top: -40px; right: -40px; width: 200px; height: 200px; border-radius: 50%; background: rgba(245, 166, 35, 0.1);"></div>
+        <div style="position: absolute; bottom: -30px; left: -30px; width: 150px; height: 150px; border-radius: 50%; background: rgba(255, 255, 255, 0.05);"></div>
       </div>
     `;
   }
@@ -162,6 +166,28 @@ const School = (() => {
     });
   }
 
+  /* ── Mobile Hamburger Toggle wire logic ─────────────────────────────────── */
+  function initMobileMenu() {
+    const hamburgerBtn = document.getElementById('mobile-hamburger-btn');
+    const navLinksContainer = document.getElementById('mobile-nav-container');
+
+    if (hamburgerBtn && navLinksContainer) {
+      hamburgerBtn.addEventListener('click', (e) => {
+        hamburgerBtn.classList.toggle('active');
+        navLinksContainer.classList.toggle('active');
+        e.stopPropagation();
+      });
+
+      // Close the menu when clicking outside of it
+      document.addEventListener('click', (e) => {
+        if (!navLinksContainer.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+          hamburgerBtn.classList.remove('active');
+          navLinksContainer.classList.remove('active');
+        }
+      });
+    }
+  }
+
   /* ── Active Nav Highlight ────────────────────────────────────────────────── */
   function highlightActiveNav() {
     const current = window.location.pathname;
@@ -182,6 +208,7 @@ const School = (() => {
     if (footerEl) footerEl.innerHTML = renderFooter();
 
     initDropdown();
+    initMobileMenu(); // Setup hamburger wire interactions
     highlightActiveNav();
   }
 

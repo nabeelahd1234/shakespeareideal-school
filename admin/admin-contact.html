@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Page — Admin Panel — Shakespeare Ideal School</title>
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+
+<aside class="sidebar" id="sidebarEl"></aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title">📞 Contact Page</div>
+    <div class="topbar-meta">
+      <a href="/contact.html" class="view-site-btn" target="_blank">View Live Site →</a>
+    </div>
+  </div>
+  <div class="content" id="mainContent"></div>
+</div>
+
+<div id="toast"></div>
+
+<script src="/js/admin-shared.js"></script>
+<script>
+// ── Default data ──────────────────────────────
+const DEFAULT_CONTACT_ITEMS = [
+  { icon: '📍', label: 'Address',      value: '123, Shakespeare Road, Anna Nagar, Chennai – 600 040' },
+  { icon: '📞', label: 'Phone',        value: '+91 98765 43210' },
+  { icon: '✉️', label: 'Email',        value: 'info@shakespeareschool.edu.in' },
+  { icon: '🕐', label: 'Office Hours', value: 'Mon – Sat: 8:00 AM – 4:30 PM' }
+];
+
+// ── State ─────────────────────────────────────
+let state = { contact: {} };
+
+document.getElementById('sidebarEl').innerHTML = buildSidebar('pages', 'contact');
+
+async function init() {
+  state.contact = await apiGet('/api/data/contact').catch(() => ({}));
+  if (!Array.isArray(state.contact.items) || !state.contact.items.length)
+    state.contact.items = DEFAULT_CONTACT_ITEMS;
+  render();
+}
+
+// ── Render ────────────────────────────────────
+function render() {
+  const d  = state.contact;
+  const ci = d.items || [];
+
+  document.getElementById('mainContent').innerHTML = `
+  <style>
+    .ab-section { background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:20px;overflow:hidden; }
+    .ab-section-header { display:flex;align-items:center;justify-content:space-between;padding:13px 18px;background:var(--sidebar-bg,#f8fafc);border-bottom:1px solid var(--border);gap:10px; }
+    .ab-section-header-left { display:flex;align-items:center;gap:9px; }
+    .ab-section-icon { font-size:17px;line-height:1; }
+    .ab-section-title { font-size:13px;font-weight:700;color:var(--text);letter-spacing:.02em;text-transform:uppercase; }
+    .ab-section-hint { font-size:11px;color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0; }
+    .ab-section-body { padding:18px; }
+    .ab-row { display:flex;align-items:flex-start;gap:10px;padding:9px 12px;background:#fff;border:1px solid var(--border);border-radius:8px;margin-bottom:8px; }
+    .ab-row:last-child { margin-bottom:0; }
+    .ab-row .form-group { margin-bottom:0; }
+    .ab-row .form-group label { font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;display:block; }
+    .ab-row .form-group input,.ab-row .form-group textarea { padding:6px 10px;font-size:13px; }
+    .ab-del-btn { flex-shrink:0;align-self:center;background:none;border:1px solid #fca5a5;color:#ef4444;border-radius:6px;padding:5px 9px;font-size:14px;cursor:pointer;transition:background .15s;margin-top:16px; }
+    .ab-del-btn:hover { background:#fef2f2; }
+    .ab-empty { text-align:center;padding:18px;color:var(--muted);font-size:13px;font-style:italic; }
+    .ab-add-btn { display:inline-flex;align-items:center;gap:5px;font-size:12px;padding:5px 12px; }
+    .about-save-bar { display:flex;gap:10px;padding:20px 0 4px;border-top:1px solid var(--border);margin-top:4px; }
+    .ab-icon-field { width:70px !important;text-align:center;font-size:18px !important; }
+    .ab-preview-box { background:#f0f9ff;border:1px dashed #93c5fd;border-radius:8px;padding:14px 18px;margin-top:4px;font-size:13px;color:#1e3a5f; }
+    .ab-preview-box strong { display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px; }
+  </style>
+
+  <div class="card" style="padding-bottom:8px;">
+    <div class="card-title" style="margin-bottom:20px;">📞 Contact Page — Full Content Editor</div>
+
+    <!-- ① PAGE HERO -->
+    <div class="ab-section">
+      <div class="ab-section-header">
+        <div class="ab-section-header-left">
+          <span class="ab-section-icon">🎯</span>
+          <span class="ab-section-title">Page Hero</span>
+          <span class="ab-section-hint">— displayed at the top of the Contact page</span>
+        </div>
+      </div>
+      <div class="ab-section-body">
+        <div class="form-grid" style="gap:12px;">
+          <div class="form-group">
+            <label>Hero Tag <span style="font-weight:400;color:var(--muted)">(small label above title)</span></label>
+            <input id="ct-heroTag" type="text" value="${esc(d.heroTag || 'Reach Out')}" placeholder="Reach Out">
+          </div>
+          <div class="form-group">
+            <label>Hero Title <span style="font-weight:400;color:var(--muted)">(main heading)</span></label>
+            <input id="ct-heroTitle" type="text" value="${esc(d.heroTitle || 'Get in Touch')}" placeholder="Get in Touch">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ② FIND US HEADING -->
+    <div class="ab-section">
+      <div class="ab-section-header">
+        <div class="ab-section-header-left">
+          <span class="ab-section-icon">📌</span>
+          <span class="ab-section-title">Section Heading</span>
+          <span class="ab-section-hint">— h3 shown above the contact info items</span>
+        </div>
+      </div>
+      <div class="ab-section-body">
+        <div class="form-group" style="margin-bottom:0">
+          <label>Find Us Heading</label>
+          <input id="ct-findUsHeading" type="text" value="${esc(d.findUsHeading || 'Find Us')}" placeholder="Find Us">
+        </div>
+      </div>
+    </div>
+
+    <!-- ③ CONTACT INFO ITEMS -->
+    <div class="ab-section">
+      <div class="ab-section-header">
+        <div class="ab-section-header-left">
+          <span class="ab-section-icon">📋</span>
+          <span class="ab-section-title">Contact Info Items</span>
+          <span class="ab-section-hint">— Address, Phone, Email, Office Hours cards</span>
+        </div>
+        <button type="button" class="btn btn-outline btn-sm ab-add-btn" id="addItemBtn">➕ Add Item</button>
+      </div>
+      <div class="ab-section-body">
+        <div style="display:grid;grid-template-columns:70px 1fr 2fr 40px;gap:8px;margin-bottom:8px;padding:0 2px;">
+          <span style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">Icon</span>
+          <span style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">Label</span>
+          <span style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">Value</span>
+          <span></span>
+        </div>
+        <div id="contactItemsContainer">${ci.map(item => renderContactItemRow(item)).join('')}</div>
+        ${ci.length === 0 ? `<div class="ab-empty" id="emptyItemsMsg">No items yet. Click "Add Item" to start.</div>` : ''}
+      </div>
+    </div>
+
+    <!-- ④ CONTACT FORM SECTION HEADING -->
+    <div class="ab-section">
+      <div class="ab-section-header">
+        <div class="ab-section-header-left">
+          <span class="ab-section-icon">✉️</span>
+          <span class="ab-section-title">Contact Form</span>
+          <span class="ab-section-hint">— heading shown above the message form card</span>
+        </div>
+      </div>
+      <div class="ab-section-body">
+        <div class="form-grid" style="gap:12px;">
+          <div class="form-group">
+            <label>Form Heading</label>
+            <input id="ct-formHeading" type="text" value="${esc(d.formHeading || 'Send Us a Message')}" placeholder="Send Us a Message">
+          </div>
+          <div class="form-group">
+            <label>Submit Button Label</label>
+            <input id="ct-submitLabel" type="text" value="${esc(d.submitLabel || 'Send Message →')}" placeholder="Send Message →">
+          </div>
+        </div>
+        <div class="form-group" style="margin-top:12px;margin-bottom:0;">
+          <label>Success Message <span style="font-weight:400;color:var(--muted)">(shown after submission)</span></label>
+          <input id="ct-successMsg" type="text" value="${esc(d.successMsg || 'Message sent successfully! We will contact you soon.')}" placeholder="Message sent successfully!">
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑤ MAP EMBED -->
+    <div class="ab-section">
+      <div class="ab-section-header">
+        <div class="ab-section-header-left">
+          <span class="ab-section-icon">🗺️</span>
+          <span class="ab-section-title">Google Maps Embed</span>
+          <span class="ab-section-hint">— optional iframe src URL for embedded map</span>
+        </div>
+      </div>
+      <div class="ab-section-body">
+        <div class="form-group" style="margin-bottom:12px;">
+          <label>Maps Embed URL <span style="font-weight:400;color:var(--muted)">(paste the src from Google Maps embed code)</span></label>
+          <input id="ct-mapUrl" type="text" value="${esc(d.mapUrl || '')}" placeholder="https://maps.google.com/maps?...">
+        </div>
+        <div class="ab-preview-box">
+          <strong>💡 How to get the URL</strong>
+          Go to Google Maps → search your school → Share → Embed a map → copy only the <em>src="…"</em> value and paste it above.
+        </div>
+      </div>
+    </div>
+
+    <!-- SAVE BAR -->
+    <div class="about-save-bar">
+      <button class="btn btn-success" id="saveContactBtn">💾 Save All Contact Page Data</button>
+      <button class="btn btn-outline" id="resetContactBtn" style="background:var(--bg)">↻ Reset to Defaults</button>
+    </div>
+  </div>`;
+
+  document.getElementById('addItemBtn').onclick    = () => ctAddItem();
+  document.getElementById('saveContactBtn').onclick  = saveCompleteContactPage;
+  document.getElementById('resetContactBtn').onclick = resetContactToDefaults;
+}
+
+// ── Row renderer ───────────────────────────────
+function renderContactItemRow(item) {
+  return `<div class="ab-row" style="display:grid;grid-template-columns:70px 1fr 2fr 40px;gap:10px;align-items:center;">
+    <div class="form-group"><input type="text" class="ci-icon ab-icon-field" value="${esc(item.icon||'')}" placeholder="📍" style="text-align:center;font-size:18px;padding:5px;"></div>
+    <div class="form-group"><input type="text" class="ci-label" value="${esc(item.label||'')}" placeholder="e.g. Address"></div>
+    <div class="form-group"><input type="text" class="ci-value" value="${esc(item.value||'')}" placeholder="e.g. 123, Shakespeare Road, Chennai"></div>
+    <button type="button" class="ab-del-btn" onclick="abRemoveRow(this)" title="Remove">✕</button>
+  </div>`;
+}
+
+window.abRemoveRow = btn => btn.closest('.ab-row').remove();
+
+window.ctAddItem = function() {
+  document.getElementById('contactItemsContainer').insertAdjacentHTML('beforeend', renderContactItemRow({}));
+  const el = document.getElementById('emptyItemsMsg');
+  if (el) el.style.display = 'none';
+};
+
+// ── Collect helper ─────────────────────────────
+function collectItems() {
+  return [...document.querySelectorAll('#contactItemsContainer .ab-row')].map(row => ({
+    icon:  row.querySelector('.ci-icon')?.value.trim()  || '',
+    label: row.querySelector('.ci-label')?.value.trim() || '',
+    value: row.querySelector('.ci-value')?.value.trim() || ''
+  })).filter(i => i.label || i.value);
+}
+
+// ── Save ───────────────────────────────────────
+window.saveCompleteContactPage = async function() {
+  const updated = {
+    ...state.contact,
+    heroTag:       document.getElementById('ct-heroTag')?.value.trim()       || '',
+    heroTitle:     document.getElementById('ct-heroTitle')?.value.trim()     || '',
+    findUsHeading: document.getElementById('ct-findUsHeading')?.value.trim() || '',
+    formHeading:   document.getElementById('ct-formHeading')?.value.trim()   || '',
+    submitLabel:   document.getElementById('ct-submitLabel')?.value.trim()   || '',
+    successMsg:    document.getElementById('ct-successMsg')?.value.trim()    || '',
+    mapUrl:        document.getElementById('ct-mapUrl')?.value.trim()        || '',
+    items:         collectItems()
+  };
+  try {
+    await api('/api/data/contact', { method: 'PUT', body: JSON.stringify(updated) });
+    state.contact = updated;
+    toast('Contact page saved successfully.');
+    render();
+  } catch (err) {
+    toast('Save failed: ' + err.message, 'error');
+  }
+};
+
+window.resetContactToDefaults = async function() {
+  if (!confirm('Reset all Contact page content to defaults?')) return;
+  const defaultContact = {
+    heroTag:       'Reach Out',
+    heroTitle:     'Get in Touch',
+    findUsHeading: 'Find Us',
+    formHeading:   'Send Us a Message',
+    submitLabel:   'Send Message →',
+    successMsg:    'Message sent successfully! We will contact you soon.',
+    mapUrl:        '',
+    items:         JSON.parse(JSON.stringify(DEFAULT_CONTACT_ITEMS))
+  };
+  try {
+    await api('/api/data/contact', { method: 'PUT', body: JSON.stringify(defaultContact) });
+    state.contact = defaultContact;
+    toast('Contact page reset to defaults.');
+    render();
+  } catch (err) {
+    toast('Reset failed: ' + err.message, 'error');
+  }
+};
+
+init();
+</script>
+</body>
+</html>

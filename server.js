@@ -499,7 +499,7 @@ app.get('/admin/gallery.html', (req, res) => {
 });
 // ── Website Pages admin routes (split from admin-pages.html) ──────────────────
 const pagesDir = path.join(__dirname, './admin/');
-const adminPageFiles = ['admin-home', 'admin-about', 'admin-principal', 'admin-vision', 'admin-achievements', 'admin-admissions', 'admin-rules'];
+const adminPageFiles = ['admin-home', 'admin-about', 'admin-principal', 'admin-vision', 'admin-achievements', 'admin-admissions', 'admin-rules', 'admin-contact'];
 adminPageFiles.forEach(name => {
   app.get(`/admin/${name}.html`, (req, res) => {
     res.sendFile(path.join(pagesDir, `${name}.html`));

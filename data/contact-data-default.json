@@ -1,0 +1,31 @@
+{
+  "heroTag": "Reach Out",
+  "heroTitle": "Get in Touch",
+  "findUsHeading": "Find Us",
+  "formHeading": "Send Us a Message",
+  "submitLabel": "Send Message →",
+  "successMsg": "Message sent successfully! We will contact you soon.",
+  "mapUrl": "",
+  "items": [
+    {
+      "icon": "📍",
+      "label": "Address",
+      "value": "123, Shakespeare Road, Anna Nagar, Chennai – 600 040"
+    },
+    {
+      "icon": "📞",
+      "label": "Phone",
+      "value": "+91 98765 43210"
+    },
+    {
+      "icon": "✉️",
+      "label": "Email",
+      "value": "info@shakespeareschool.edu.in"
+    },
+    {
+      "icon": "🕐",
+      "label": "Office Hours",
+      "value": "Mon – Sat: 8:00 AM – 4:30 PM"
+    }
+  ]
+}
